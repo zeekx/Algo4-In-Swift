@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ObjectiveC
 
 func SortTime<T : Comparable>(sortName:String, inout sequence:[T]) {
     let startDate = NSDate()
@@ -36,17 +35,17 @@ func SortTime<T : Comparable>(sortName:String, inout sequence:[T]) {
 
 var seq:[Int] = []
 
-for i in (0 ... 2000).reverse() {
+for i in (0 ... 10).reverse() {
     seq.append(i)
 }
 var seqCopy = seq
 var seqBubbleCopy = seq
 var seqSelectionCopy = seq
-var seqInsertionCopy = ["S","O","R","T","E","X","A","M","P","L","E"]
+var seqInsertionCopy = seq//["S","O","R","T","E","X","A","M","P","L","E"]
 //print(seq.description + "\n" + seqCopy.sort().description + "\n\n")
 
-//SortTime("Bubble", sequence: &seqBubbleCopy)
-//SortTime("Selection", sequence: &seqSelectionCopy)
+SortTime("Bubble", sequence: &seqBubbleCopy)
+SortTime("Selection", sequence: &seqSelectionCopy)
 SortTime("Insertion", sequence: &seqInsertionCopy)
 
 
