@@ -27,8 +27,8 @@ class Sort<T:Comparable > : NSObject {
     }
     
     class func isSorted(sequence:[T]) -> Bool {
-        for index in 0..<sequence.count {
-            if !less(sequence[index], r: sequence[index+1]) {
+        for index in 1..<sequence.count {
+            if !less(sequence[index-1], r: sequence[index]) {
                 return false
             }
         }
@@ -55,6 +55,7 @@ class BubbleSort<T:Comparable>: Sort<T> {
 }
 
 class SelectionSort<T : Comparable> : Sort<T> {
+    //Version1: select min from right to left in unsort to trail
     // [head, trail)
 //    class private func selectMaxIndex(sequence : [T], trail : Int , _ head : Int) -> Int {
 //        var indexOfMax = head
@@ -66,13 +67,14 @@ class SelectionSort<T : Comparable> : Sort<T> {
 //        return indexOfMax
 //    }
 //    
-//    Version1: select min from right to left in unsort to trail
+
 //    class override func sort(inout sequence :[T])  {
 //        for i in (0 ..< sequence.count).reverse() {
 //            let max = selectMaxIndex(sequence, trail: i + 1, 0)
 //            exchange(&sequence, l: i, r: max)
 //        }
 //    }
+    
     //Version2: select min from left to right in unsort to head
     class override func sort(inout sequence : [T]) {
         for i in 0 ..< sequence.count {
@@ -90,15 +92,32 @@ class SelectionSort<T : Comparable> : Sort<T> {
 class InsertionSort<T : Comparable>: Sort< T > {
     class override func sort(inout sequence : [T]) {
         for i in 1 ..< sequence.count {
-            for j in (1 ... i).reverse() {
-                if less(sequence[j], r: sequence[j-1]) {
-                    exchange(&sequence, l: j-1, r: j)
-//                    print(String(format:"%2d",i),String(format: "%2d",j), sequence.description)
-                } else {
-                    break
+            let tmp = sequence[i]
+            var j = i
+            while j > 0 && less(tmp, r:sequence[j-1]) {
+                sequence[j] = sequence[j-1]
+                j -= 1
+            }
+            sequence[j] = tmp
+        }
+    }
+}
+
+class ShellSort<T : Comparable> : Sort<T> {
+    class override func sort(inout sequence : [T]) {
+        var h = 1
+        while (h < sequence.count / 3) {
+            h =  3 * h + 1
+        }
+        while h >= 1 {
+            for i in h ..< sequence.count {
+                var j = i
+                while j >= h && less(sequence[j], r: sequence[j-h]) {
+                    exchange(&sequence, l: j, r: j-h)
+                    j -= h
                 }
-            }//for-j
-//            print()
-        }//for-i
+            }
+            h /= 3
+        }
     }
 }
